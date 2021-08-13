@@ -68,7 +68,6 @@ async def main_loop(loop, password, user, url):
 
 def main():
     """Run example."""
-    #test
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
     parser = argparse.ArgumentParser(description="Test the SMA webconnect library.")
