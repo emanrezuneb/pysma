@@ -6,7 +6,7 @@ from typing import Any, Iterator, List, Optional, Union
 import attr
 import jmespath  # type: ignore
 
-from .const import JMESPATH_VAL, JMESPATH_VAL_IDX
+from .const import JMESPATH_VAL, JMESPATH_VAL_IDX, JMESPATH_VAL_STR
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -64,6 +64,7 @@ class Sensor:
                 if isinstance(self.path, (list, tuple))
                 else [
                     JMESPATH_VAL,
+                    JMESPATH_VAL_STR.format(self.key_idx),
                     JMESPATH_VAL_IDX.format(devclass, self.key_idx),
                 ]
             )
@@ -89,6 +90,11 @@ class Sensor:
                 "Sensor %s: No successful value decoded yet: %s", self.name, res
             )
             res = None
+
+        # SMA will return None instead of 0 if if no power is generated
+        # For "W" sensors we will set it to 0 by default.
+        if res is None and self.unit == "W":
+            res = 0
 
         if isinstance(res, (int, float)) and self.factor:
             res /= self.factor

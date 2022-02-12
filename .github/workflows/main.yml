@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request]
 
 env:
-  DEFAULT_PYTHON: 3.8
+  DEFAULT_PYTHON: "3.9"
 
 jobs:
   black:
@@ -15,8 +15,6 @@ jobs:
         with:
           python-version: ${{ env.DEFAULT_PYTHON }}
       - uses: psf/black@stable
-        with:
-          args: ". --check"
 
   isort:
     name: Check isort
@@ -90,7 +88,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.8, 3.9]
+        python-version: ["3.9", "3.10"]
     needs:
       - black
       - isort
